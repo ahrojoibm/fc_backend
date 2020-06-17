@@ -73,8 +73,6 @@ WSGI_APPLICATION = 'fc_backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/3.0/ref/settings/#databases
 
-from . import database
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',

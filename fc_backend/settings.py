@@ -14,9 +14,12 @@ import os
 
 try:
     secret_key = os.environ['SECRET_KEY']
+    apikey = os.environ['CLOUDANT_APIKEY']
+    host = os.environ['CLOUDANT_HOST']
+    url = os.environ['CLOUDANT_URL']
+    username = os.environ['CLOUDANT_USERNAME']
 except:
     from .secrets import *
-    
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -29,7 +32,11 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+try:
+    if os.environ['SECRET_KEY']:
+        DEBUG = False
+except:
+    DEBUG = True
 
 ALLOWED_HOSTS = ['localhost', 'fc-backend3-default.team-kors-cluster-4860349f6a1f3fb50b8ba96afd99ce5f-0000.us-south.containers.appdomain.cloud']
 

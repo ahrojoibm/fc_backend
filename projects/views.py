@@ -1,9 +1,15 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import JsonResponse, HttpResponseNotFound
 from cloudant import Cloudant, database, query
 from django.views.decorators.csrf import csrf_exempt
 
+from django.contrib.auth.decorators import login_required
+
 from django.views import View
+
+from django.contrib.auth.models import User
+from django.contrib import auth
+from django.utils.decorators import method_decorator
 
 try:
     apikey = os.environ['CLOUDANT_APIKEY']
@@ -20,14 +26,30 @@ query_db = query.Query(db)
 
 class AllProjects(View):
 
+    @method_decorator(login_required(login_url='/projects/login'))
     def get(self, request, *args, **kwargs):
         docs = query_db(limit=100, selector={'_id': {'$gt': 0}})['docs']
         return JsonResponse({'docs': docs})
 
 class SingleProject(View):
+
+    @method_decorator(login_required(login_url='/projects/login'))
     def get(self, request, project_id, *args, **kwargs):
         doc = query_db(selector={'_id': {'$eq': project_id}})['docs']
         if doc:
             return JsonResponse({'doc': doc})
         return HttpResponseNotFound({"Project id not found"})
+
+class Login(View):
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'projects/login.html')
+
+    def post(self, request, *args, **kwargs):
+        user = auth.authenticate(username=request.POST['username'], password=request.POST['password1'])
+        if user:
+            auth.login(request, user)
+            return redirect('login')
+        return render(request, 'projects/login.html', {'message': 'Username or password is incorrect!'})
+
 

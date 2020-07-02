@@ -26,14 +26,14 @@ query_db = query.Query(db)
 
 class AllProjects(View):
 
-    @method_decorator(login_required(login_url='/projects/login'))
+    # @method_decorator(login_required(login_url='/projects/login'))
     def get(self, request, *args, **kwargs):
         docs = query_db(limit=100, selector={'_id': {'$gt': 0}})['docs']
         return JsonResponse({'docs': docs})
 
 class SingleProject(View):
 
-    @method_decorator(login_required(login_url='/projects/login'))
+    # @method_decorator(login_required(login_url='/projects/login'))
     def get(self, request, project_id, *args, **kwargs):
         doc = query_db(selector={'_id': {'$eq': project_id}})['docs']
         if doc:

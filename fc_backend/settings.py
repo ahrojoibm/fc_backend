@@ -39,8 +39,7 @@ except:
     DEBUG = True
 
 ALLOWED_HOSTS = [
-    'localhost:8000',
-    'localhost:3000', 
+    'localhost',
     'fc-backend3-default.team-kors-cluster-4860349f6a1f3fb50b8ba96afd99ce5f-0000.us-south.containers.appdomain.cloud',
     'fc-frontend-default.team-kors-cluster-4860349f6a1f3fb50b8ba96afd99ce5f-0000.us-south.containers.appdomain.cloud/'
     ]
@@ -146,10 +145,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-CORS_ORIGIN_WHITE_LIST = [
-    'http://localhost:8000',
-    'http://localhost:3000',
-    'http://fc-backend3-default.team-kors-cluster-4860349f6a1f3fb50b8ba96afd99ce5f-0000.us-south.containers.appdomain.cloud',
-    'http://fc-frontend-default.team-kors-cluster-4860349f6a1f3fb50b8ba96afd99ce5f-0000.us-south.containers.appdomain.cloud/',    
-]

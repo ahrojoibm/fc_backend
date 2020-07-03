@@ -3,13 +3,18 @@ from django.http import JsonResponse, HttpResponseNotFound
 from cloudant import Cloudant, database, query
 from django.views.decorators.csrf import csrf_exempt
 
-from django.contrib.auth.decorators import login_required
+from rest_framework.views import APIView
+from rest_framework.response import Response
 
 from django.views import View
 
 from django.contrib.auth.models import User
 from django.contrib import auth
 from django.utils.decorators import method_decorator
+
+from rest_framework.permissions import IsAuthenticated
+
+from .models import Mock
 
 try:
     apikey = os.environ['CLOUDANT_APIKEY']
@@ -19,37 +24,39 @@ try:
 except:
     from .database_credentials import *
 
+from django.views.decorators.csrf import csrf_exempt
+
+
+
 client = Cloudant.iam(username, apikey)
 client.connect()
 db = database.CloudantDatabase(client, 'korsdb')
 query_db = query.Query(db)
 
-class AllProjects(View):
+class AllProjects(APIView):
+    permission_classes = (IsAuthenticated,)
 
-    # @method_decorator(login_required(login_url='/projects/login'))
-    def get(self, request, *args, **kwargs):
+    def get(self, request):
         docs = query_db(limit=100, selector={'_id': {'$gt': 0}})['docs']
-        return JsonResponse({'docs': docs})
+        return Response({'docs': docs})
 
-class SingleProject(View):
+    def get_queryset(self):
+        return Mock.objects.all()
 
-    # @method_decorator(login_required(login_url='/projects/login'))
-    def get(self, request, project_id, *args, **kwargs):
+class SingleProject(APIView):
+    permission_classes = (IsAuthenticated,)
+
+    def get(self, request, project_id):
         doc = query_db(selector={'_id': {'$eq': project_id}})['docs']
         if doc:
             return JsonResponse({'doc': doc})
         return HttpResponseNotFound({"Project id not found"})
 
-class Login(View):
+    def get_queryset(self):
+        return Mock.objects.all()
 
-    def get(self, request, *args, **kwargs):
-        return render(request, 'projects/login.html')
 
-    def post(self, request, *args, **kwargs):
-        user = auth.authenticate(username=request.POST['username'], password=request.POST['password1'])
-        if user:
-            auth.login(request, user)
-            return redirect('login')
-        return render(request, 'projects/login.html', {'message': 'Username or password is incorrect!'})
+
+
 
 

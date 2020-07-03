@@ -41,7 +41,7 @@ try:
         print(os.environ['FRONTEND_URL'],
             os.environ['BACKEND_URL'],)
         DEBUG = False
-        SECURE_SSL_REDIRECT = True
+        # SECURE_SSL_REDIRECT = True
 except:
     DEBUG = True
     ALLOWED_HOSTS = [

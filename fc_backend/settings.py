@@ -35,9 +35,11 @@ SECRET_KEY = secret_key
 try:
     if os.environ['SECRET_KEY']:
         ALLOWED_HOSTS = [
-        os.environ['FRONTEND_URL'],
-        os.environ['BACKEND_URL'],
+            os.environ['FRONTEND_URL'],
+            os.environ['BACKEND_URL'],
         ]
+        print(os.environ['FRONTEND_URL'],
+            os.environ['BACKEND_URL'],)
         DEBUG = False
         SECURE_SSL_REDIRECT = True
 except:

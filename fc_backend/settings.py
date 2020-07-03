@@ -18,8 +18,10 @@ try:
     host = os.environ['CLOUDANT_HOST']
     url = os.environ['CLOUDANT_URL']
     username = os.environ['CLOUDANT_USERNAME']
+    DEBUG = False
 except:
     from .secrets import *
+    DEBUG = True
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -32,19 +34,10 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
-try:
-    ALLOWED_HOSTS = [
-        os.environ['FRONTEND_URL'],
-        os.environ['BACKEND_URL'],
-    ]
-    print(os.environ['FRONTEND_URL'],
-        os.environ['BACKEND_URL'],)
-    DEBUG = False
-except:
-    DEBUG = True
-    ALLOWED_HOSTS = [
-        'localhost',
-        ]
+
+ALLOWED_HOSTS = [
+    '*'
+]
 
 CORS_ORIGIN_ALLOW_ALL=True
 # Application definition

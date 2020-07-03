@@ -33,23 +33,18 @@ SECRET_KEY = secret_key
 
 # SECURITY WARNING: don't run with debug turned on in production!
 try:
-    if os.environ['SECRET_KEY']:
-        ALLOWED_HOSTS = [
-            os.environ['FRONTEND_URL'],
-            os.environ['BACKEND_URL'],
-        ]
-        print(os.environ['FRONTEND_URL'],
-            os.environ['BACKEND_URL'],)
-        DEBUG = False
-        # SECURE_SSL_REDIRECT = True
+    ALLOWED_HOSTS = [
+        os.environ['FRONTEND_URL'],
+        os.environ['BACKEND_URL'],
+    ]
+    print(os.environ['FRONTEND_URL'],
+        os.environ['BACKEND_URL'],)
+    DEBUG = False
 except:
     DEBUG = True
     ALLOWED_HOSTS = [
         'localhost',
         ]
-
-
-
 
 CORS_ORIGIN_ALLOW_ALL=True
 # Application definition
@@ -151,7 +146,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
 
 STATIC_URL = '/static/'
-
-
-
-

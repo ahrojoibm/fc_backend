@@ -7,10 +7,6 @@ from django.contrib.auth.decorators import login_required
 
 from django.views import View
 
-from django.contrib.auth.models import User
-from django.contrib import auth
-from django.utils.decorators import method_decorator
-
 try:
     apikey = os.environ['CLOUDANT_APIKEY']
     host = os.environ['CLOUDANT_HOST']
@@ -26,14 +22,12 @@ query_db = query.Query(db)
 
 class AllProjects(View):
 
-    # @method_decorator(login_required(login_url='/projects/login'))
     def get(self, request, *args, **kwargs):
         docs = query_db(limit=100, selector={'_id': {'$gt': 0}})['docs']
         return JsonResponse({'docs': docs})
 
 class SingleProject(View):
 
-    # @method_decorator(login_required(login_url='/projects/login'))
     def get(self, request, project_id, *args, **kwargs):
         doc = query_db(selector={'_id': {'$eq': project_id}})['docs']
         if doc:

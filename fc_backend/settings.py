@@ -34,15 +34,18 @@ SECRET_KEY = secret_key
 # SECURITY WARNING: don't run with debug turned on in production!
 try:
     if os.environ['SECRET_KEY']:
+        ALLOWED_HOSTS = [
+        os.environ['FRONTEND_URL'],
+        os.environ['BACKEND_URL'],
+        ]
         DEBUG = False
 except:
     DEBUG = True
+    ALLOWED_HOSTS = [
+        'localhost',
+        ]
 
-ALLOWED_HOSTS = [
-    'localhost',
-    'fc-backend3-default.team-kors-cluster-4860349f6a1f3fb50b8ba96afd99ce5f-0000.us-south.containers.appdomain.cloud',
-    'fc-frontend-default.team-kors-cluster-4860349f6a1f3fb50b8ba96afd99ce5f-0000.us-south.containers.appdomain.cloud/'
-    ]
+
 
 
 CORS_ORIGIN_ALLOW_ALL=True
